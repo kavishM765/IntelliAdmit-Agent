@@ -17,9 +17,9 @@ function App() {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Connect to the WebSocket server
+// Connect to the Secure Cloud WebSocket server
   useEffect(() => {
-    wsRef.current = new WebSocket('ws://localhost:8080');
+    wsRef.current = new WebSocket('wss://intelliadmit-agent-285254614141.europe-west1.run.app');
     wsRef.current.onopen = () => setIsConnected(true);
     
     wsRef.current.onmessage = (event) => {
@@ -28,7 +28,6 @@ function App() {
         setMessages(prev => [...prev, { role: 'ai', text: data.reply }]);
       }
     };
-
     return () => wsRef.current?.close();
   }, []);
 
