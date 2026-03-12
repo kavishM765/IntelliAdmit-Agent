@@ -95,10 +95,10 @@ wss.on('connection', (clientWs) => {
                     if (call.name === "saveInquiry") {
                         const { name, phone, email, domain } = call.args;
                         try {
-                            // 1. Save to Database
+                            // 1. Save to Database (Fixed Table Name to 'leads')
                             await pool.execute(
-                                'INSERT INTO admission_inquiries (student_name, phone_number, interest_domain) VALUES (?, ?, ?)',
-                                [name || "Unknown", phone, domain || "Unknown"]
+                                'INSERT INTO leads (name, phone, email, course_interest) VALUES (?, ?, ?, ?)',
+                                [name || "Unknown", phone || "Unknown", email || "Unknown", domain || "Unknown"]
                             );
                             
                             // 2. Beautiful HTML Email for Student
@@ -144,10 +144,16 @@ wss.on('connection', (clientWs) => {
                             transporter.sendMail(studentMailOptions, (err) => { if (err) console.error("❌ Student EMAIL ERROR:", err.message); });
                             transporter.sendMail(adminMailOptions, (err) => { if (err) console.error("❌ Admin EMAIL ERROR:", err.message); });
 
-                            response = await chatSession.sendMessage({ 
-                                message: [{ functionResponse: { name: "saveInquiry", response: { status: "OK" } } }] 
-                            });
-                        } catch (dbErr) { console.error("Database Error:", dbErr); }
+                            // 4. Manually send success to frontend and STOP execution so it doesn't crash the AI loop
+                            const successReply = `I have successfully saved your details for the **${domain}** program and emailed you the official brochure! 🎉\n\n![Success](https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80)\n\nPlease reach out to our admission counselor at **9865824929** to finalize your placement.`;
+                            clientWs.send(JSON.stringify({ reply: successReply }));
+                            
+                            return; // Stop here!
+
+                        } catch (dbErr) { 
+                            console.error("Database Error:", dbErr);
+                            throw new Error("Database insert failed, triggering fallback...");
+                        }
                     }
                 }
 
