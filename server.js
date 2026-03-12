@@ -25,6 +25,7 @@ const pool = mysql.createPool({
         rejectUnauthorized: false
     }
 });
+
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
@@ -38,7 +39,6 @@ const server = app.listen(port, () => {
 
 const wss = new WebSocketServer({ server });
 
-// 🔥 NEW: A function to generate a fresh AI brain whenever we need it!
 function createChatSession() {
     return ai.chats.create({
         model: 'gemini-2.5-flash',
@@ -80,7 +80,6 @@ function createChatSession() {
 }
 
 wss.on('connection', (clientWs) => {
-    // Start the first session
     let chatSession = createChatSession();
 
     clientWs.on('message', async (message) => {
@@ -96,19 +95,54 @@ wss.on('connection', (clientWs) => {
                     if (call.name === "saveInquiry") {
                         const { name, phone, email, domain } = call.args;
                         try {
+                            // 1. Save to Database
                             await pool.execute(
                                 'INSERT INTO admission_inquiries (student_name, phone_number, interest_domain) VALUES (?, ?, ?)',
                                 [name || "Unknown", phone, domain || "Unknown"]
                             );
                             
-                            transporter.sendMail({
+                            // 2. Beautiful HTML Email for Student
+                            const studentMailOptions = {
                                 from: process.env.EMAIL_USER,
                                 to: email, 
-                                subject: `Your Admission Details for SNS College of Technology`,
-                                html: `<h2>Welcome to SNS College, ${name}!</h2><p>You have successfully registered for the ${domain} program. Please contact 9865824929 to finalize your admission.</p>`
-                            }, (err) => {
-                                if (err) console.error("❌ EMAIL ERROR:", err.message);
-                            });
+                                subject: `🎓 Your IntelliAdmit Application is Confirmed!`,
+                                html: `
+                                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; max-width: 600px;">
+                                        <h2 style="color: #d11261;">Welcome to SNS College of Technology! 🎉</h2>
+                                        <p>Hi <strong>${name}</strong>,</p>
+                                        <p>We have successfully received your inquiry for the <strong>${domain}</strong> program and saved your details in our system.</p>
+                                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                                            <p><strong>Next Steps:</strong></p>
+                                            <p>Our admission counselor will review your profile. Please reach out to us at <strong>9865824929</strong> to finalize your placement!</p>
+                                        </div>
+                                        <p>Best regards,<br><strong>The IntelliAdmit Team</strong></p>
+                                    </div>
+                                `
+                            };
+
+                            // 3. Alert Email for Admin
+                            const adminMailOptions = {
+                                from: process.env.EMAIL_USER,
+                                to: process.env.EMAIL_USER, // Sends back to you
+                                subject: `🚨 NEW LEAD: ${name} (${domain})`,
+                                html: `
+                                    <div style="font-family: Arial, sans-serif; padding: 20px; border-left: 5px solid #00c853; background-color: #f1f8e9;">
+                                        <h3 style="color: #2e7d32;">🔥 New Admission Inquiry!</h3>
+                                        <p>A new student just registered via the IntelliAdmit Agent.</p>
+                                        <ul>
+                                            <li><strong>Name:</strong> ${name}</li>
+                                            <li><strong>Email:</strong> ${email}</li>
+                                            <li><strong>Phone:</strong> ${phone}</li>
+                                            <li><strong>Domain:</strong> ${domain}</li>
+                                        </ul>
+                                        <p>Check your Aiven Cloud Database for the full records.</p>
+                                    </div>
+                                `
+                            };
+
+                            // Send both emails
+                            transporter.sendMail(studentMailOptions, (err) => { if (err) console.error("❌ Student EMAIL ERROR:", err.message); });
+                            transporter.sendMail(adminMailOptions, (err) => { if (err) console.error("❌ Admin EMAIL ERROR:", err.message); });
 
                             response = await chatSession.sendMessage({ 
                                 message: [{ functionResponse: { name: "saveInquiry", response: { status: "OK" } } }] 
@@ -123,8 +157,6 @@ wss.on('connection', (clientWs) => {
 
             } catch (apiError) {
                 console.error("Backend Rate Limit or Crash:", apiError.message); 
-                
-                // 🔥 FIX 1: Instantly reset the AI brain so the chat doesn't freeze!
                 chatSession = createChatSession(); 
 
                 const userText = data.text;
@@ -133,21 +165,41 @@ wss.on('connection', (clientWs) => {
                 if (emailMatch) {
                     const targetEmail = emailMatch[0];
                     
-                    transporter.sendMail({
+                    // Fallback Beautiful Email for Student
+                    const fallbackStudentMailOptions = {
                         from: process.env.EMAIL_USER,
                         to: targetEmail, 
-                        subject: `Your Admission Details for SNS College of Technology`,
-                        html: `<h2>Welcome to SNS College!</h2><p>We have successfully registered your interest. Please contact 9865824929 to finalize your admission.</p>`
-                    }, (err, info) => {
-                        // 🔥 FIX 2: We now log exactly why the email is failing!
-                        if (err) {
-                            console.error("\n❌ NODEMAILER FAILED TO SEND EMAIL!");
-                            console.error("Reason:", err.message);
-                            console.log("💡 TIP: You MUST use a 16-digit Google 'App Password' in your .env file, NOT your normal Gmail password!\n");
-                        } else {
-                            console.log(`📧 Fallback Email sent successfully to: ${targetEmail}`);
-                        }
-                    });
+                        subject: `🎓 Your IntelliAdmit Application is Confirmed!`,
+                        html: `
+                            <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; max-width: 600px;">
+                                <h2 style="color: #d11261;">Welcome to SNS College of Technology! 🎉</h2>
+                                <p>Hi there,</p>
+                                <p>We have successfully received your inquiry and saved your details in our system.</p>
+                                <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+                                    <p><strong>Next Steps:</strong></p>
+                                    <p>Our admission counselor will review your profile. Please reach out to us at <strong>9865824929</strong> to finalize your placement!</p>
+                                </div>
+                                <p>Best regards,<br><strong>The IntelliAdmit Team</strong></p>
+                            </div>
+                        `
+                    };
+
+                    // Fallback Admin Email
+                    const fallbackAdminMailOptions = {
+                        from: process.env.EMAIL_USER,
+                        to: process.env.EMAIL_USER,
+                        subject: `🚨 NEW LEAD (Fallback System): ${targetEmail}`,
+                        html: `
+                            <div style="font-family: Arial, sans-serif; padding: 20px; border-left: 5px solid #ff9800; background-color: #fff3e0;">
+                                <h3 style="color: #e65100;">⚠️ New Inquiry via Fallback System</h3>
+                                <p>A user submitted their email during a high-traffic moment.</p>
+                                <ul><li><strong>Email:</strong> ${targetEmail}</li></ul>
+                            </div>
+                        `
+                    };
+
+                    transporter.sendMail(fallbackStudentMailOptions);
+                    transporter.sendMail(fallbackAdminMailOptions);
 
                     const successReply = `I have successfully saved your details and emailed you the official brochure! 🎉\n\n![Success](https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80)\n\nPlease reach out to our admission counselor at **9865824929** to finalize your placement.`;
                     clientWs.send(JSON.stringify({ reply: successReply }));
