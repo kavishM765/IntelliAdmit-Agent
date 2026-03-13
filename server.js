@@ -15,6 +15,8 @@ app.use((req, res, next) => {
     next();
 });
 
+console.log(`🔍 DEBUG TEST - Hostname seen by Google Cloud is: "${process.env.DB_HOST}"`);
+
 const pool = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
