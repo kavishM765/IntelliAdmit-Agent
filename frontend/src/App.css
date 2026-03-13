@@ -191,7 +191,7 @@ body, html {
   cursor: pointer;
 }
 
-/@media screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
     /* Force the whole page to fit */
     html, body {
         overflow-x: hidden;
