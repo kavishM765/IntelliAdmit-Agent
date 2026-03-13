@@ -13,7 +13,7 @@ const pool = mysql.createPool({
     password: process.env.DB_PASS,                           
     database: 'defaultdb',                                   
     port: 14473,                                             
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false } ,
     family: 4
 });
 
