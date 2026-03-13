@@ -6,6 +6,7 @@
 [![Backend Status](https://img.shields.io/badge/Backend-Google_Cloud_Run-4285F4)](https://intelliadmit-agent-285254614141.europe-west1.run.app)
 [![Challenge Category](https://img.shields.io/badge/Challenge-Creative_Storyteller-D11261)](#)
 
+
 ---
 
 ## 🏗️ Full-Stack Cloud Architecture
@@ -14,6 +15,7 @@ IntelliAdmit is a fault-tolerant, full-stack AI application. It uses a secured W
 
 ![IntelliAdmit Architecture Diagram]<img width="1021" height="361" alt="architecture_diagram" src="https://github.com/user-attachments/assets/67f75a30-1ef2-45d6-b8e7-c1d70d1b3ef0" />
 
+IntelliAdmit is a multimodal AI admission assistant. To see the data captured during your test, run node view-leads.js in the terminal to fetch live records from our Aiven MySQL cloud.
 
 ---
 
