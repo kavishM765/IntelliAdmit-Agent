@@ -29,6 +29,13 @@ IntelliAdmit is a multimodal AI admission assistant. To see the data captured du
 * **Fault-Tolerant Fallback System:** A critical reliability feature that intercepts user emails in real-time, even if the AI API hiccups or rate limits, ensuring no lead is ever lost.
 
 ---
+### 🌍 Multilingual Support
+IntelliAdmit is designed for inclusivity. Leveraging the natural language capabilities of **Gemini 1.5 Flash**, the agent can seamlessly communicate in:
+* **English** (Primary)
+* **Tamil** (Regional Support)
+* **Hinglish/Tanglish** (Mixed language support for natural conversation)
+
+This ensures that students and parents from diverse backgrounds can navigate the admission process comfortably in their preferred language.
 
 ## 🛠️ Technology Stack
 
