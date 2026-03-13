@@ -204,48 +204,57 @@ body, html {
   }
 }
 
-/* Special fixes for mobile screens */
+/* --- ULTIMATE MOBILE RESPONSIVENESS --- */
 @media screen and (max-width: 600px) {
-  /* 1. Make the main title smaller so it doesn't overflow */
-  h1, .portal-title { 
-    font-size: 1.8rem !important; 
-    text-align: center;
-  }
+    /* Title Scaling */
+    h1, .portal-title { 
+        font-size: 1.6rem !important; 
+        margin-top: 10px !important;
+        padding: 0 10px;
+    }
 
-  /* 2. Adjust the container padding so it doesn't touch the edges */
-  .container, .main-wrapper {
-    padding: 10px !important;
-    width: 100% !important;
-    box-sizing: border-box;
-  }
+    /* Container adjustments */
+    .main-wrapper, .container {
+        padding: 10px !important;
+        width: 100vw !important;
+        box-sizing: border-box;
+    }
 
-  /* 3. Fix the input area at the bottom */
-  .input-area {
-    flex-direction: row; /* Keep button next to input */
-    gap: 5px;
-  }
+    /* Chat Area Height */
+    .chat-box {
+        height: 65vh !important; /* Fixed height to keep input visible */
+        padding: 15px !important;
+        margin-bottom: 80px !important; /* Space for the floating input */
+    }
 
-  input {
-    font-size: 14px !important; /* Prevents iOS zoom-in on focus */
-  }
+    /* Input Area - The most critical fix */
+    .input-area {
+        position: fixed;
+        bottom: 10px;
+        left: 5%;
+        width: 90% !important;
+        display: flex !important;
+        flex-direction: row !important; /* Keep items side-by-side */
+        align-items: center;
+        background: #1a1a2e; /* Matches your theme */
+        padding: 10px;
+        border-radius: 12px;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
 
-  /* 4. Ensure the chat box doesn't push the input off-screen */
-  .chat-box {
-    height: 60vh !important; 
-  }
+    .input-area input {
+        flex: 1; /* Takes up remaining space */
+        font-size: 14px !important;
+        padding: 12px !important;
+        margin-right: 8px !important;
+        border-radius: 8px !important;
+    }
 
-  @media screen and (max-width: 600px) {
-  /* ... previous code ... */
-
-  .input-area input {
-    width: 70% !important; /* Give the input more horizontal space */
-    padding: 12px !important; 
-  }
-
-  .send-button {
-    width: 25% !important; /* Compact the button slightly */
-    padding: 10px !important;
-    font-size: 14px !important;
-  }
-}
+    .send-button {
+        width: auto !important;
+        padding: 10px 20px !important;
+        font-size: 14px !important;
+        border-radius: 8px !important;
+    }
 }
