@@ -7,6 +7,15 @@ import nodemailer from 'nodemailer';
 
 dotenv.config();
 
+const pool = mysql.createPool({
+    host: 'intelliadmit-db-kavishkmjtm123.e.aivencloud.com', 
+    user: 'avnadmin',                                        
+    password: process.env.DB_PASS,                           
+    database: 'defaultdb',                                   
+    port: 14473,                                             
+    ssl: { rejectUnauthorized: false }
+});
+
 const app = express();
 const port = process.env.PORT || 8080;
 
