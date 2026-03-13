@@ -190,3 +190,16 @@ body, html {
   outline: none;
   cursor: pointer;
 }
+
+/* Styles for phones (screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .header-title {
+    font-size: 1.5rem; /* Shrink title */
+  }
+  .chat-box {
+    height: 70vh; /* Adjust height for mobile keyboard */
+  }
+  .desktop-only-sidebar {
+    display: none; /* Hide things that don't fit */
+  }
+}
