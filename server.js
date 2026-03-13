@@ -104,23 +104,76 @@ wss.on('connection', (clientWs) => {
                             );
                             
                             // 2. Beautiful HTML Email for Student
-                            const studentMailOptions = {
-                                from: process.env.EMAIL_USER,
-                                to: email, 
-                                subject: `🎓 Your IntelliAdmit Application is Confirmed!`,
-                                html: `
-                                    <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; max-width: 600px;">
-                                        <h2 style="color: #d11261;">Welcome to SNS College of Technology! 🎉</h2>
-                                        <p>Hi <strong>${name}</strong>,</p>
-                                        <p>We have successfully received your inquiry for the <strong>${domain}</strong> program and saved your details in our system.</p>
-                                        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
-                                            <p><strong>Next Steps:</strong></p>
-                                            <p>Our admission counselor will review your profile. Please reach out to us at <strong>9865824929</strong> to finalize your placement!</p>
-                                        </div>
-                                        <p>Best regards,<br><strong>The IntelliAdmit Team</strong></p>
-                                    </div>
-                                `
-                            };
+                           const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: studentEmail, 
+    subject: `Information regarding Admissions at SNS College of Technology`,
+    html: `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 10px;">
+        <h2 style="color: #e91e63; border-bottom: 2px solid #e91e63; padding-bottom: 10px;">Welcome to SNS College of Technology! 🎓</h2>
+        
+        <p>Hello <strong>${studentName}</strong>,</p>
+        
+        <p>Thank you for your inquiry. We are delighted to provide you with the details regarding our various engineering and management programs at SNS College of Technology.</p>
+
+        <h3 style="color: #333;">Course Fees (Management Quota)</h3>
+        <p>Below are the annual tuition and hostel fee details for our primary departments. Please note that fees decrease based on the specialization chosen:</p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px;">
+            <tr style="background-color: #fce4ec; text-align: left;">
+                <th style="border: 1px solid #ddd; padding: 10px;">Department</th>
+                <th style="border: 1px solid #ddd; padding: 10px;">Tuition Fee (Approx.)</th>
+                <th style="border: 1px solid #ddd; padding: 10px;">Hostel Fee</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>CSE</strong> (Computer Science)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹1,20,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>IT</strong> (Information Tech)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹1,15,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>AIML</strong> (AI & Machine Learning)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹1,10,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>ECE</strong> (Electronics & Comm)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹1,00,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>EEE</strong> (Electrical & Electronics)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>MECH</strong> (Mechanical Eng)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹80,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 10px;"><strong>MBA</strong> (Management)</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹70,000</td>
+                <td style="border: 1px solid #ddd; padding: 10px;">₹90,000</td>
+            </tr>
+        </table>
+
+        <h3 style="color: #333; margin-top: 20px;">Placements & Campus</h3>
+        <p>Our students are recruited by global leaders including <strong>TCS, Wipro, Infosys, and Amazon</strong>. Our campus offers high-speed Wi-Fi and state-of-the-art research labs to ensure a world-class learning experience.</p>
+
+        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; border-left: 4px solid #e91e63; margin-top: 20px;">
+            <p style="margin: 0;"><strong>Visit Us:</strong> Monday to Friday, 9:00 AM to 4:30 PM</p>
+            <p style="margin: 5px 0 0 0;"><strong>Admission Office:</strong> +91 9489465755, +91 9865824929</p>
+        </div>
+
+        <p style="margin-top: 25px;">Regards,<br><strong>Admissions Team</strong><br>SNS College of Technology</p>
+    </div>
+    `
+};
 
                             // 3. Alert Email for Admin
                             const adminMailOptions = {
