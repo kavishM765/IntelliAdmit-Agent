@@ -14,6 +14,7 @@ const pool = mysql.createPool({
     database: 'defaultdb',                                   
     port: 14473,                                             
     ssl: { rejectUnauthorized: false }
+    family: 4
 });
 
 const app = express();
