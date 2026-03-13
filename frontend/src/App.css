@@ -191,96 +191,51 @@ body, html {
   cursor: pointer;
 }
 
-/* Styles for phones (screens smaller than 768px) */
-@media screen and (max-width: 768px) {
-  .header-title {
-    font-size: 1.5rem; /* Shrink title */
-  }
-  .chat-box {
-    height: 70vh; /* Adjust height for mobile keyboard */
-  }
-  .desktop-only-sidebar {
-    display: none; /* Hide things that don't fit */
-  }
-}
-
-/* --- ULTIMATE MOBILE RESPONSIVENESS --- */
-@media screen and (max-width: 600px) {
-    /* Title Scaling */
-    h1, .portal-title { 
-        font-size: 1.6rem !important; 
-        margin-top: 10px !important;
-        padding: 0 10px;
+/@media screen and (max-width: 600px) {
+    /* Force the whole page to fit */
+    html, body {
+        overflow-x: hidden;
+        height: 100%;
+        position: fixed; /* Prevents background scrolling */
+        width: 100%;
     }
 
-    /* Container adjustments */
-    .main-wrapper, .container {
+    .container {
+        height: 100dvh !important; /* Use dynamic viewport height */
         padding: 10px !important;
-        width: 100vw !important;
-        box-sizing: border-box;
     }
 
-    /* Chat Area Height */
     .chat-box {
-        height: 65vh !important; /* Fixed height to keep input visible */
-        padding: 15px !important;
-        margin-bottom: 80px !important; /* Space for the floating input */
+        flex: 1;
+        height: calc(100dvh - 180px) !important; /* Forces box to stay above input */
+        margin-bottom: 70px !important;
     }
 
-    /* Input Area - The most critical fix */
+    /* Floating Input Bar - Always Visible */
     .input-area {
-        position: fixed;
-        bottom: 10px;
-        left: 5%;
-        width: 90% !important;
+        position: fixed !important;
+        bottom: 15px !important;
+        left: 50% !important;
+        transform: translateX(-50%);
+        width: 92% !important;
+        background: #1a1a2e !important;
+        border: 1px solid #3a7bd5 !important;
+        border-radius: 15px !important;
         display: flex !important;
-        flex-direction: row !important; /* Keep items side-by-side */
-        align-items: center;
-        background: #1a1a2e; /* Matches your theme */
-        padding: 10px;
-        border-radius: 12px;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
-        z-index: 1000;
+        padding: 8px !important;
+        z-index: 9999;
     }
 
     .input-area input {
-        flex: 1; /* Takes up remaining space */
-        font-size: 14px !important;
-        padding: 12px !important;
-        margin-right: 8px !important;
-        border-radius: 8px !important;
+        width: 70% !important;
+        background: transparent !important;
+        font-size: 16px !important; /* Browser won't zoom in at 16px */
     }
 
     .send-button {
-        width: auto !important;
-        padding: 10px 20px !important;
-        font-size: 14px !important;
-        border-radius: 8px !important;
+        width: 28% !important;
+        padding: 10px !important;
+        font-size: 13px !important;
+        text-transform: uppercase;
     }
-
-    @media screen and (max-width: 600px) {
-  /* ... keep your existing mobile styles ... */
-
-  .input-area {
-    display: flex !important;
-    padding: 10px !important;
-    gap: 5px !important;
-  }
-
-  .input-area input {
-    width: 75% !important; /* Give the text box more room */
-    padding: 10px !important;
-    font-size: 14px !important;
-  }
-
-  .send-button {
-    width: 22% !important; /* Make the button significantly smaller */
-    padding: 10px 5px !important; /* Reduced padding for a tighter fit */
-    font-size: 12px !important; /* Smaller text for the button */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    white-space: nowrap; /* Prevents text from wrapping to a second line */
-  }
-}
 }
