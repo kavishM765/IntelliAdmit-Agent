@@ -257,4 +257,30 @@ body, html {
         font-size: 14px !important;
         border-radius: 8px !important;
     }
+
+    @media screen and (max-width: 600px) {
+  /* ... keep your existing mobile styles ... */
+
+  .input-area {
+    display: flex !important;
+    padding: 10px !important;
+    gap: 5px !important;
+  }
+
+  .input-area input {
+    width: 75% !important; /* Give the text box more room */
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+
+  .send-button {
+    width: 22% !important; /* Make the button significantly smaller */
+    padding: 10px 5px !important; /* Reduced padding for a tighter fit */
+    font-size: 12px !important; /* Smaller text for the button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap; /* Prevents text from wrapping to a second line */
+  }
+}
 }
