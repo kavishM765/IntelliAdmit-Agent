@@ -233,4 +233,19 @@ body, html {
   .chat-box {
     height: 60vh !important; 
   }
+
+  @media screen and (max-width: 600px) {
+  /* ... previous code ... */
+
+  .input-area input {
+    width: 70% !important; /* Give the input more horizontal space */
+    padding: 12px !important; 
+  }
+
+  .send-button {
+    width: 25% !important; /* Compact the button slightly */
+    padding: 10px !important;
+    font-size: 14px !important;
+  }
+}
 }
