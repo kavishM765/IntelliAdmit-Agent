@@ -203,3 +203,34 @@ body, html {
     display: none; /* Hide things that don't fit */
   }
 }
+
+/* Special fixes for mobile screens */
+@media screen and (max-width: 600px) {
+  /* 1. Make the main title smaller so it doesn't overflow */
+  h1, .portal-title { 
+    font-size: 1.8rem !important; 
+    text-align: center;
+  }
+
+  /* 2. Adjust the container padding so it doesn't touch the edges */
+  .container, .main-wrapper {
+    padding: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* 3. Fix the input area at the bottom */
+  .input-area {
+    flex-direction: row; /* Keep button next to input */
+    gap: 5px;
+  }
+
+  input {
+    font-size: 14px !important; /* Prevents iOS zoom-in on focus */
+  }
+
+  /* 4. Ensure the chat box doesn't push the input off-screen */
+  .chat-box {
+    height: 60vh !important; 
+  }
+}
