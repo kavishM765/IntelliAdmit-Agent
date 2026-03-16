@@ -215,9 +215,19 @@ body, html {
     .subtitle {
         font-size: 0.95rem;
     }
+    
+    /* ... inside your @media screen and (max-width: 600px) ... */
+
+    .top-controls {
+        margin-bottom: 10px;
+        flex-shrink: 0; /* 🔥 Prevents the language bar from vanishing */
+        position: relative;
+        z-index: 10;
+    }
 
     .header-section {
         margin-bottom: 10px;
+        flex-shrink: 0; /* 🔥 Prevents the title from shrinking */
     }
 
     /* 3. Chat Area - Let it flex perfectly between header and input */
@@ -272,8 +282,5 @@ body, html {
         align-items: center;
     }
     
-    /* Make the top language control a bit more compact */
-    .top-controls {
-        margin-bottom: 10px;
-    }
+   
 }
